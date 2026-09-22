@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title id="meta-title">Business Store | 9jaVibeMall</title>
+  
+  <meta name="description" id="meta-desc" content="Browse verified vendor catalog, contact details, and products on 9jaVibeMall - Nigeria's premier commerce marketplace." />
+  <link rel="canonical" id="meta-canonical" href="https://9javibemall.com.ng/business/" />
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="profile" />
+  <meta property="og:url" id="og-url" content="https://9javibemall.com.ng/business/" />
+  <meta property="og:title" id="og-title" content="Business Store on 9jaVibeMall" />
+  <meta property="og:description" id="og-desc" content="Shop directly from this verified business on 9jaVibeMall." />
+  <meta property="og:image" id="og-image" content="https://9javibemall.com.ng/assets/logo.png" />
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:url" id="twitter-url" content="https://9javibemall.com.ng/business/" />
+  <meta name="twitter:title" id="twitter-title" content="Business Store on 9jaVibeMall" />
+  <meta name="twitter:description" id="twitter-desc" content="Shop directly from this verified business on 9jaVibeMall." />
+  <meta name="twitter:image" id="twitter-image" content="https://9javibemall.com.ng/assets/logo.png" />
+
+  <link rel="icon" type="image/png" href="/assets/logo.png" />
+  <link rel="stylesheet" href="/assets/styles.css" />
+  <style>
+    .business-header {
+      position: relative;
+      background: var(--gray-900);
+      min-height: 180px;
+      display: flex;
+      align-items: flex-end;
+      overflow: hidden;
+    }
+    .business-banner {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0.7;
+    }
+    .business-profile-row {
+      position: relative;
+      display: flex;
+      align-items: flex-end;
+      gap: 1.25rem;
+      padding: 0 1.5rem;
+      margin-top: -45px;
+      z-index: 10;
+    }
+    .business-logo {
+      width: 90px;
+      height: 90px;
+      border-radius: 18px;
+      border: 4px solid var(--white);
+      background: var(--white);
+      object-fit: cover;
+      box-shadow: var(--shadow-md);
+    }
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 1rem;
+      margin-top: 1.25rem;
+    }
+    .product-mini-card {
+      background: var(--white);
+      border: 1px solid var(--gray-200);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      text-decoration: none;
+      color: inherit;
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+      display: flex;
+      flex-direction: column;
+    }
+    .product-mini-card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+    .product-mini-img {
+      width: 100%;
+      height: 140px;
+      object-fit: cover;
+      background: var(--gray-100);
+    }
+    .product-mini-info {
+      padding: 0.75rem;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .product-mini-title {
+      font-size: 0.875rem;
+      font-weight: 600;
+      line-height: 1.3;
+      margin-bottom: 0.35rem;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .product-mini-price {
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: var(--primary);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <header class="navbar">
+    <div class="nav-container">
+      <a href="/" class="brand-link">
+        <img src="/assets/logo.png" alt="9jaVibeMall Logo" class="brand-logo" />
+        <span class="brand-title">9ja<span>Vibe</span>Mall</span>
+      </a>
+      <button id="nav-open-app-btn" class="btn btn-outline" style="padding: 0.5rem 1rem; font-size: 0.875rem;">
+        Open App
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="main-content">
+
+    <!-- Smart App Banner -->
+    <div class="smart-app-banner">
+      <div class="smart-banner-info">
+        <img src="/assets/logo.png" alt="9jaVibeMall Icon" class="smart-banner-icon" />
+        <div class="smart-banner-text">
+          <h3>Open Store in 9jaVibeMall</h3>
+          <p id="platform-notice">Browse full catalog, chat with vendor, and enjoy express delivery.</p>
+        </div>
+      </div>
+      <button id="banner-open-btn" class="btn btn-primary">
+        Open in App
+      </button>
+    </div>
+
+    <!-- Business Card Container -->
+    <article id="business-container" class="card">
+      
+      <!-- Skeleton Loader -->
+      <div id="skeleton-loader">
+        <div class="skeleton" style="height: 180px; width: 100%;"></div>
+        <div class="content-body" style="padding-top: 2rem;">
+          <div class="skeleton skeleton-title"></div>
+          <div class="skeleton skeleton-text" style="width: 40%; margin-bottom: 1.5rem;"></div>
+          <div class="skeleton skeleton-text"></div>
+          <div class="skeleton skeleton-text" style="width: 75%;"></div>
+        </div>
+      </div>
+
+      <!-- Loaded Business Content -->
+      <div id="loaded-content" style="display: none;">
+        
+        <div class="business-header">
+          <img id="biz-banner" src="/assets/logo.png" alt="Store Banner" class="business-banner" />
+        </div>
+
+        <div class="business-profile-row">
+          <img id="biz-logo" src="/assets/logo.png" alt="Business Logo" class="business-logo" />
+          <div style="margin-bottom: 0.5rem;">
+            <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
+              <h1 id="biz-name" class="content-title" style="margin-bottom: 0; font-size: 1.45rem;">
+                Business Name
+              </h1>
+              <span id="verified-badge" class="badge" style="background: #dcfce7; color: var(--success); font-size: 0.75rem;">
+                ✓ Verified
+              </span>
+            </div>
+            <p id="biz-location" style="color: var(--gray-500); font-size: 0.875rem; margin-top: 0.2rem;">
+              Campus Vendor &bull; Nigeria
+            </p>
+          </div>
+        </div>
+
+        <div class="content-body" style="padding-top: 1.25rem;">
+          
+          <!-- Bio / Description -->
+          <div class="description-section" style="border-top: none; padding-top: 0;">
+            <h3>About This Business</h3>
+            <p id="biz-desc" class="description-text">Verified store on 9jaVibeMall.</p>
+          </div>
+
+          <!-- CTAs -->
+          <div class="cta-cluster" style="margin-bottom: 2rem;">
+            <button id="btn-open-app-primary" class="btn btn-primary btn-lg" style="flex: 1;">
+              ⚡ Open Store in 9jaVibeMall
+            </button>
+            <a id="btn-download-primary" href="#" class="btn btn-dark btn-lg dynamic-download-btn" style="flex: 1;">
+              Download Mobile App
+            </a>
+          </div>
+
+          <!-- Products from this Business -->
+          <section id="products-section" style="border-top: 1px solid var(--gray-200); padding-top: 1.5rem;">
+            <div style="display: flex; align-items: center; justify-content: space-between;">
+              <h3>Products from this Store</h3>
+              <span id="product-count" class="badge badge-gray">0 items</span>
+            </div>
+
+            <div id="products-grid" class="products-grid">
+              <!-- Dynamically populated or skeleton -->
+            </div>
+          </section>
+
+        </div>
+      </div>
+
+      <!-- Error State -->
+      <div id="error-state" class="content-body" style="display: none; text-align: center; padding: 3rem 1.5rem;">
+        <div style="font-size: 3rem; margin-bottom: 1rem;">🏪</div>
+        <h2 style="font-size: 1.4rem; font-weight: 700; margin-bottom: 0.5rem;" id="error-title">
+          Business Not Found
+        </h2>
+        <p style="color: var(--gray-600); margin-bottom: 1.5rem;" id="error-message">
+          We couldn't locate this business. It may have been closed, or the link may be incomplete.
+        </p>
+        <div class="cta-cluster" style="justify-content: center;">
+          <a href="/" class="btn btn-primary">
+            Back to Marketplace
+          </a>
+          <button id="btn-error-open-app" class="btn btn-dark">
+            Open 9jaVibeMall App
+          </button>
+        </div>
+      </div>
+
+    </article>
+
+    <!-- Download Section -->
+    <section class="download-card">
+      <h3>Experience 9jaVibeMall on Mobile</h3>
+      <p>Download the app to follow your favorite vendors, receive discounts, and buy with ease.</p>
+      <div class="store-buttons">
+        <a href="https://play.google.com/store/apps/details?id=com.stellarisnovatech.naijavibemall" target="_blank" rel="noopener noreferrer" class="btn btn-dark">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M3.609 1.814L13.792 12 3.61 22.186a2.404 2.404 0 0 1-.61-.318 2.38 2.38 0 0 1-.999-1.928V4.06c0-.77.37-1.487.999-1.928.188-.13.397-.24.609-.318zm11.235 11.238l2.25 2.25-11.758 6.786 9.508-9.036zm0-2.104L5.336 1.912 17.094 8.7l-2.25 2.248zm1.096 1.052l3.414 1.968c1.334.77 1.334 2.03 0 2.8l-3.414 1.97-2.316-2.316 2.316-2.422z"/></svg>
+          Google Play Store
+        </a>
+        <a href="https://apps.apple.com/app/9javibemall/idYOUR_APP_STORE_ID" target="_blank" rel="noopener noreferrer" class="btn btn-dark">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.37c.61-.75 1.04-1.8 1.01-2.87-.96.04-2.13.65-2.8 1.43-.59.68-1.11 1.76-1.03 2.81 1.07.08 2.19-.57 2.82-1.37z"/></svg>
+          Apple App Store
+        </a>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <p>&copy; 2026 9jaVibeMall by Stellaris Nova Tech. All rights reserved.</p>
+    <p style="margin-top: 0.5rem;">
+      <a href="https://9javibemall.com.ng">Home</a> &bull; 
+      <a href="naijavibemall://">Open App</a>
+    </p>
+  </footer>
+
+  <script src="/assets/app.js"></script>
+  <script>
+    /**
+     * Extract business ID from URL path (/business/123) or query string (?id=123)
+     */
+    function getBusinessId() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const queryId = urlParams.get("id");
+      if (queryId) return queryId;
+
+      const pathSegments = window.location.pathname.split("/").filter(Boolean);
+      const bizIdx = pathSegments.indexOf("business");
+      if (bizIdx !== -1 && pathSegments.length > bizIdx + 1) {
+        return pathSegments[bizIdx + 1];
+      }
+      return null;
+    }
+
+    function formatNaira(amount) {
+      if (typeof amount !== "number") amount = parseFloat(amount) || 0;
+      return "₦" + amount.toLocaleString("en-NG", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    }
+
+    async function loadBusiness() {
+      const businessId = getBusinessId();
+
+      // Configure app open buttons with custom scheme
+      const customSchemeUrl = businessId ? `naijavibemall://business/${businessId}` : "naijavibemall://";
+      
+      const setupOpenButtons = () => {
+        ["nav-open-app-btn", "banner-open-btn", "btn-open-app-primary", "btn-error-open-app"].forEach(btnId => {
+          const btn = document.getElementById(btnId);
+          if (btn) {
+            btn.onclick = () => triggerAppOpen(customSchemeUrl, true);
+          }
+        });
+      };
+      setupOpenButtons();
+
+      if (!businessId) {
+        document.getElementById("skeleton-loader").style.display = "none";
+        document.getElementById("error-title").innerText = "No Business Specified";
+        document.getElementById("error-message").innerText = "Please specify a business ID to view store details.";
+        document.getElementById("error-state").style.display = "block";
+        return;
+      }
+
+      // Update canonical meta tag
+      const canonicalUrl = `https://9javibemall.com.ng/business/${businessId}`;
+      document.getElementById("meta-canonical").href = canonicalUrl;
+      document.getElementById("og-url").content = canonicalUrl;
+      document.getElementById("twitter-url").content = canonicalUrl;
+
+      try {
+        const response = await fetch(`${CONFIG.apiBaseUrl}/business/${businessId}`);
+        if (!response.ok) {
+          throw new Error(`Business not found (${response.status})`);
+        }
+
+        const data = await response.json();
+        const business = data.business || data.data || data;
+
+        if (!business || (!business.name && !business.id)) {
+          throw new Error("Invalid business payload");
+        }
+
+        // Render business info
+        document.getElementById("biz-name").innerText = business.name || "Untitled Business";
+        document.getElementById("meta-title").innerText = `${business.name} | 9jaVibeMall`;
+        document.getElementById("og-title").content = `${business.name} | 9jaVibeMall`;
+        document.getElementById("twitter-title").content = `${business.name} | 9jaVibeMall`;
+
+        const descText = business.description || `Explore products and deals from ${business.name} on 9jaVibeMall.`;
+        document.getElementById("biz-desc").innerText = descText;
+        document.getElementById("meta-desc").content = descText;
+        document.getElementById("og-desc").content = descText;
+        document.getElementById("twitter-desc").content = descText;
+
+        if (business.state || business.campus) {
+          document.getElementById("biz-location").innerText = `${business.campus || ""} ${business.state ? "• " + business.state : ""}`.trim();
+        }
+
+        // Logos and banners
+        const logoUrl = business.businessImage || "/assets/logo.png";
+        document.getElementById("biz-logo").src = logoUrl;
+        document.getElementById("og-image").content = logoUrl.startsWith("http") ? logoUrl : `https://9javibemall.com.ng${logoUrl}`;
+        document.getElementById("twitter-image").content = logoUrl.startsWith("http") ? logoUrl : `https://9javibemall.com.ng${logoUrl}`;
+
+        const bannerUrl = (Array.isArray(business.bannerImages) && business.bannerImages.length > 0)
+          ? business.bannerImages[0]
+          : logoUrl;
+        document.getElementById("biz-banner").src = bannerUrl;
+
+        // Show loaded content
+        document.getElementById("skeleton-loader").style.display = "none";
+        document.getElementById("loaded-content").style.display = "block";
+
+        // Optional: Fetch products from this business
+        try {
+          const prodResponse = await fetch(`${CONFIG.apiBaseUrl}/business/products/${businessId}`);
+          if (prodResponse.ok) {
+            const prodData = await prodResponse.json();
+            const products = prodData.products || prodData.data || [];
+            
+            const grid = document.getElementById("products-grid");
+            const countBadge = document.getElementById("product-count");
+            
+            if (Array.isArray(products) && products.length > 0) {
+              countBadge.innerText = `${products.length} item${products.length > 1 ? "s" : ""}`;
+              grid.innerHTML = "";
+              products.forEach(p => {
+                const pImg = (Array.isArray(p.images) && p.images.length > 0) ? p.images[0] : "/assets/logo.png";
+                const card = document.createElement("a");
+                card.href = `/product/${p.id || p.productId}`;
+                card.className = "product-mini-card";
+                card.innerHTML = `
+                  <img src="${pImg}" alt="${p.name}" class="product-mini-img" />
+                  <div class="product-mini-info">
+                    <h4 class="product-mini-title">${p.name}</h4>
+                    <span class="product-mini-price">${formatNaira(p.price)}</span>
+                  </div>
+                `;
+                grid.appendChild(card);
+              });
+            } else {
+              grid.innerHTML = `<p style="color: var(--gray-500); grid-column: 1/-1;">No products listed yet.</p>`;
+            }
+          }
+        } catch {
+          // Non-critical product list failure
+        }
+
+      } catch (err) {
+        document.getElementById("skeleton-loader").style.display = "none";
+        document.getElementById("error-title").innerText = "Unable to Load Business";
+        document.getElementById("error-message").innerText = err.message || "Failed to load business details from server.";
+        document.getElementById("error-state").style.display = "block";
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", loadBusiness);
+  </script>
+</body>
+</html>

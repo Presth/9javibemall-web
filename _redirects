@@ -1,0 +1,5 @@
+# Redirect rules for Netlify / Cloudflare Pages
+/.well-known/apple-app-site-association /.well-known/apple-app-site-association 200
+/.well-known/assetlinks.json /.well-known/assetlinks.json 200
+/product/* /product/index.html 200
+/business/* /business/index.html 200
