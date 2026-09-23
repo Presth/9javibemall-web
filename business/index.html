@@ -315,8 +315,10 @@
       document.getElementById("og-url").content = canonicalUrl;
       document.getElementById("twitter-url").content = canonicalUrl;
 
+      const API_BASE_URL = "https://api.9javibemall.com.ng/api/v1";
+
       try {
-        const response = await fetch(`${CONFIG.apiBaseUrl}/business/${businessId}`);
+        const response = await fetch(`${API_BASE_URL}/business/${businessId}`);
         if (!response.ok) {
           throw new Error(`Business not found (${response.status})`);
         }
@@ -361,7 +363,7 @@
 
         // Optional: Fetch products from this business
         try {
-          const prodResponse = await fetch(`${CONFIG.apiBaseUrl}/business/products/${businessId}`);
+          const prodResponse = await fetch(`${API_BASE_URL}/business/products/${businessId}`);
           if (prodResponse.ok) {
             const prodData = await prodResponse.json();
             const products = prodData.products || prodData.data || [];

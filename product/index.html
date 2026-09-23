@@ -218,8 +218,10 @@
       document.getElementById("og-url").content = canonicalUrl;
       document.getElementById("twitter-url").content = canonicalUrl;
 
+      const API_BASE_URL = "https://api.9javibemall.com.ng/api/v1";
+
       try {
-        const response = await fetch(`${CONFIG.apiBaseUrl}/products/${productId}`);
+        const response = await fetch(`${API_BASE_URL}/products/${productId}`);
         if (!response.ok) {
           throw new Error(`Product not found (${response.status})`);
         }

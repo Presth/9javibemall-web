@@ -8,7 +8,7 @@ const CONFIG = {
   scheme: "naijavibemall",
   playStoreUrl: "https://play.google.com/store/apps/details?id=com.stellarisnovatech.naijavibemall",
   appStoreUrl: "https://apps.apple.com/app/9javibemall/idYOUR_APP_STORE_ID", // Production placeholder
-  apiBaseUrl: "https://ready9ja-api.onrender.com/api/v1",
+  apiBaseUrl: "https://api.9javibemall.com.ng/api/v1",
 };
 
 /**

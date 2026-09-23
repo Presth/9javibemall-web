@@ -51,14 +51,14 @@ Created the full website structure at [`9javibemall-web/`](file:///c:/Users/peak
 3. [`index.html`](file:///c:/Users/peaks/Development/9javibemall-web/index.html):
    - 9jaVibeMall branded landing page with platform detection (Android, iOS, Desktop), store download buttons, and Open App action.
 4. [`product/index.html`](file:///c:/Users/peaks/Development/9javibemall-web/product/index.html):
-   - Fetches product data dynamically from `https://ready9ja-api.onrender.com/api/v1/products/{id}`.
+   - Fetches product data dynamically from `https://api.9javibemall.com.ng/api/v1/products/{id}`.
    - Displays product images, title, price, discount badge, vendor store link, and description.
    - Open in 9jaVibeMall button (`naijavibemall://product/{id}`).
    - Dynamic platform download button.
    - Rich Open Graph / Twitter Card social metadata.
    - Skeleton loader and graceful error state.
 5. [`business/index.html`](file:///c:/Users/peaks/Development/9javibemall-web/business/index.html):
-   - Fetches business store data from `https://ready9ja-api.onrender.com/api/v1/business/{id}` and items from `/business/products/{id}`.
+   - Fetches business store data from `https://api.9javibemall.com.ng/api/v1/business/{id}` and items from `/business/products/{id}`.
    - Displays store banner, logo, name, verified badge, location, and product grid.
    - Open Store in 9jaVibeMall button (`naijavibemall://business/{id}`).
    - Dynamic platform download button.
