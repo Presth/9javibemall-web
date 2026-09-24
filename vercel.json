@@ -43,6 +43,14 @@
     {
       "source": "/delete-account",
       "destination": "/delete-account/index.html"
+    },
+    {
+      "source": "/contact/:path*",
+      "destination": "/contact/index.html"
+    },
+    {
+      "source": "/contact",
+      "destination": "/contact/index.html"
     }
   ]
 }

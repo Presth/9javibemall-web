@@ -5,3 +5,5 @@
 /business/* /business/index.html 200
 /delete-account/* /delete-account/index.html 200
 /delete-account /delete-account/index.html 200
+/contact/* /contact/index.html 200
+/contact /contact/index.html 200
