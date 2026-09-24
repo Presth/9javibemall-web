@@ -3,3 +3,5 @@
 /.well-known/assetlinks.json /.well-known/assetlinks.json 200
 /product/* /product/index.html 200
 /business/* /business/index.html 200
+/delete-account/* /delete-account/index.html 200
+/delete-account /delete-account/index.html 200

@@ -35,6 +35,14 @@
     {
       "source": "/business/:id*",
       "destination": "/business/index.html"
+    },
+    {
+      "source": "/delete-account/:path*",
+      "destination": "/delete-account/index.html"
+    },
+    {
+      "source": "/delete-account",
+      "destination": "/delete-account/index.html"
     }
   ]
 }
