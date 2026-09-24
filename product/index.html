@@ -207,13 +207,20 @@
       if (!productId) {
         document.getElementById("skeleton-loader").style.display = "none";
         document.getElementById("error-title").innerText = "No Product Specified";
-        document.getElementById("error-message").innerText = "Please specify a product ID to view details.";
+        document.getElementById("error-message").innerText = "Please specify a product ID or slug to view details.";
         document.getElementById("error-state").style.display = "block";
         return;
       }
 
+      // Automatically attempt to open the product directly in the mobile app on mobile devices
+      const platform = getPlatform();
+      const urlParams = new URLSearchParams(window.location.search);
+      if (platform !== "desktop" && !urlParams.get("no_app")) {
+        triggerAppOpen(customSchemeUrl, true);
+      }
+
       // Update canonical meta tag
-      const canonicalUrl = `https://9javibemall.com.ng/product/${productId}`;
+      const canonicalUrl = `https://www.9javibemall.com.ng/product/${productId}`;
       document.getElementById("meta-canonical").href = canonicalUrl;
       document.getElementById("og-url").content = canonicalUrl;
       document.getElementById("twitter-url").content = canonicalUrl;
@@ -221,7 +228,16 @@
       const API_BASE_URL = "https://api.9javibemall.com.ng/api/v1";
 
       try {
-        const response = await fetch(`${API_BASE_URL}/products/${productId}`);
+        const isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(productId);
+        const fetchUrl = isUuid
+          ? `${API_BASE_URL}/products/${encodeURIComponent(productId)}`
+          : `${API_BASE_URL}/products/slug/${encodeURIComponent(productId)}`;
+
+        let response = await fetch(fetchUrl);
+        // Fallback to /products/:id in case slug endpoint wasn't reached
+        if (!response.ok && !isUuid) {
+          response = await fetch(`${API_BASE_URL}/products/${encodeURIComponent(productId)}`);
+        }
         if (!response.ok) {
           throw new Error(`Product not found (${response.status})`);
         }

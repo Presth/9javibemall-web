@@ -6,6 +6,7 @@
 const CONFIG = {
   appName: "9jaVibeMall",
   scheme: "naijavibemall",
+  packageName: "com.stellarisnovatech.naijavibemall",
   playStoreUrl: "https://play.google.com/store/apps/details?id=com.stellarisnovatech.naijavibemall",
   appStoreUrl: "https://apps.apple.com/app/9javibemall/idYOUR_APP_STORE_ID", // Production placeholder
   apiBaseUrl: "https://api.9javibemall.com.ng/api/v1",
@@ -37,19 +38,39 @@ function getDownloadUrl() {
 }
 
 /**
- * Attempt to open the custom scheme, with polite fallback if app is not installed
+ * Attempt to open the entity in the app, with fallback to app store/download if not installed
  */
-function triggerAppOpen(customSchemeUrl, fallbackDownload = false) {
+function triggerAppOpen(customSchemeUrl, fallbackDownload = true) {
+  const platform = getPlatform();
+  const downloadUrl = getDownloadUrl();
+
+  if (platform === "android") {
+    // Android Intent URI: opens the mobile app if installed, or redirects directly to Google Play Store
+    const intentPath = customSchemeUrl.replace(`${CONFIG.scheme}://`, "");
+    const intentUrl = `intent://${intentPath}#Intent;scheme=${CONFIG.scheme};package=${CONFIG.packageName};S.browser_fallback_url=${encodeURIComponent(downloadUrl)};end`;
+    window.location.href = intentUrl;
+    return;
+  }
+
+  // iOS handling: launch custom scheme and fallback to App Store if app not installed
   const startTime = Date.now();
+  let appOpened = false;
+
+  const handleVisibility = () => {
+    if (document.hidden) {
+      appOpened = true;
+    }
+  };
+  document.addEventListener("visibilitychange", handleVisibility, { once: true });
+
   window.location.href = customSchemeUrl;
 
-  if (fallbackDownload) {
+  if (fallbackDownload && platform === "ios") {
     setTimeout(() => {
-      // If the user remains in browser without switching away after 2 seconds, redirect to store
-      if (Date.now() - startTime < 2500) {
-        window.location.href = getDownloadUrl();
+      if (!appOpened && !document.hidden && Date.now() - startTime < 3500) {
+        window.location.href = downloadUrl;
       }
-    }, 1800);
+    }, 2000);
   }
 }
 

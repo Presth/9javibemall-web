@@ -309,8 +309,15 @@
         return;
       }
 
+      // Automatically attempt to open the business directly in the mobile app on mobile devices
+      const platform = getPlatform();
+      const urlParams = new URLSearchParams(window.location.search);
+      if (platform !== "desktop" && !urlParams.get("no_app")) {
+        triggerAppOpen(customSchemeUrl, true);
+      }
+
       // Update canonical meta tag
-      const canonicalUrl = `https://9javibemall.com.ng/business/${businessId}`;
+      const canonicalUrl = `https://www.9javibemall.com.ng/business/${businessId}`;
       document.getElementById("meta-canonical").href = canonicalUrl;
       document.getElementById("og-url").content = canonicalUrl;
       document.getElementById("twitter-url").content = canonicalUrl;
