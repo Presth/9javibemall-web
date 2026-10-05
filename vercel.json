@@ -25,16 +25,67 @@
           "value": "*"
         }
       ]
+    },
+    {
+      "source": "/sitemap.xml",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "application/xml; charset=utf-8"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "public, s-maxage=3600, stale-while-revalidate=86400"
+        }
+      ]
+    },
+    {
+      "source": "/sitemaps/:file*",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "application/xml; charset=utf-8"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "public, s-maxage=3600, stale-while-revalidate=86400"
+        }
+      ]
+    },
+    {
+      "source": "/robots.txt",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/plain; charset=utf-8"
+        }
+      ]
     }
   ],
   "rewrites": [
     {
+      "source": "/robots.txt",
+      "destination": "/api/robots"
+    },
+    {
+      "source": "/sitemap.xml",
+      "destination": "/api/sitemap"
+    },
+    {
+      "source": "/sitemaps/:file*",
+      "destination": "/api/sitemaps?file=:file*"
+    },
+    {
       "source": "/product/:id*",
-      "destination": "/product/index.html"
+      "destination": "/api/product?id=:id*"
     },
     {
       "source": "/business/:id*",
-      "destination": "/business/index.html"
+      "destination": "/api/business?id=:id*"
+    },
+    {
+      "source": "/category/:slug*",
+      "destination": "/api/category?slug=:slug*"
     },
     {
       "source": "/delete-account/:path*",

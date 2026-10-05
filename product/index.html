@@ -6,21 +6,21 @@
   <title id="meta-title">Product Details | 9jaVibeMall</title>
   
   <meta name="description" id="meta-desc" content="View product details, pricing, and vendor information on 9jaVibeMall - Nigeria's premier commerce marketplace." />
-  <link rel="canonical" id="meta-canonical" href="https://9javibemall.com.ng/product/" />
+  <link rel="canonical" id="meta-canonical" href="https://www.9javibemall.com.ng/product/" />
 
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="product" />
-  <meta property="og:url" id="og-url" content="https://9javibemall.com.ng/product/" />
+  <meta property="og:url" id="og-url" content="https://www.9javibemall.com.ng/product/" />
   <meta property="og:title" id="og-title" content="Product on 9jaVibeMall" />
   <meta property="og:description" id="og-desc" content="Discover great products on 9jaVibeMall. Open in app or shop online." />
-  <meta property="og:image" id="og-image" content="https://9javibemall.com.ng/assets/logo.png" />
+  <meta property="og:image" id="og-image" content="https://www.9javibemall.com.ng/assets/logo.png" />
 
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:url" id="twitter-url" content="https://9javibemall.com.ng/product/" />
+  <meta name="twitter:url" id="twitter-url" content="https://www.9javibemall.com.ng/product/" />
   <meta name="twitter:title" id="twitter-title" content="Product on 9jaVibeMall" />
   <meta name="twitter:description" id="twitter-desc" content="Discover great products on 9jaVibeMall. Open in app or shop online." />
-  <meta name="twitter:image" id="twitter-image" content="https://9javibemall.com.ng/assets/logo.png" />
+  <meta name="twitter:image" id="twitter-image" content="https://www.9javibemall.com.ng/assets/logo.png" />
 
   <link rel="icon" type="image/png" href="/assets/logo.png" />
   <link rel="stylesheet" href="/assets/styles.css" />
@@ -210,13 +210,6 @@
         document.getElementById("error-message").innerText = "Please specify a product ID or slug to view details.";
         document.getElementById("error-state").style.display = "block";
         return;
-      }
-
-      // Automatically attempt to open the product directly in the mobile app on mobile devices
-      const platform = getPlatform();
-      const urlParams = new URLSearchParams(window.location.search);
-      if (platform !== "desktop" && !urlParams.get("no_app")) {
-        triggerAppOpen(customSchemeUrl, true);
       }
 
       // Update canonical meta tag

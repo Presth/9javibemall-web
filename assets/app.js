@@ -44,15 +44,13 @@ function triggerAppOpen(customSchemeUrl, fallbackDownload = true) {
   const platform = getPlatform();
   const downloadUrl = getDownloadUrl();
 
-  if (platform === "android") {
-    // Android Intent URI: opens the mobile app if installed, or redirects directly to Google Play Store
-    const intentPath = customSchemeUrl.replace(`${CONFIG.scheme}://`, "");
-    const intentUrl = `intent://${intentPath}#Intent;scheme=${CONFIG.scheme};package=${CONFIG.packageName};S.browser_fallback_url=${encodeURIComponent(downloadUrl)};end`;
-    window.location.href = intentUrl;
+  if (platform === "desktop") {
+    if (fallbackDownload) {
+      window.open(downloadUrl, "_blank");
+    }
     return;
   }
 
-  // iOS handling: launch custom scheme and fallback to App Store if app not installed
   const startTime = Date.now();
   let appOpened = false;
 
@@ -62,7 +60,34 @@ function triggerAppOpen(customSchemeUrl, fallbackDownload = true) {
     }
   };
   document.addEventListener("visibilitychange", handleVisibility, { once: true });
+  window.addEventListener("pagehide", () => { appOpened = true; }, { once: true });
 
+  if (platform === "android") {
+    const intentPath = customSchemeUrl.replace(`${CONFIG.scheme}://`, "");
+    const intentUrl = `intent://${intentPath}#Intent;scheme=${CONFIG.scheme};package=${CONFIG.packageName};S.browser_fallback_url=${encodeURIComponent(downloadUrl)};end`;
+
+    // Detect if running inside standard Chrome vs third-party browser / in-app WebView
+    const isChrome = /Chrome/i.test(navigator.userAgent) && !/Firefox|FxiOS|OPR|Edge/i.test(navigator.userAgent);
+
+    if (isChrome) {
+      window.location.href = intentUrl;
+    } else {
+      // Non-Chrome browsers / in-app webviews: launch via custom scheme
+      window.location.href = customSchemeUrl;
+    }
+
+    // Safety timeout: If app is not installed and browser stayed open, redirect to Play Store
+    if (fallbackDownload) {
+      setTimeout(() => {
+        if (!appOpened && !document.hidden && Date.now() - startTime < 3500) {
+          window.location.href = downloadUrl;
+        }
+      }, 1500);
+    }
+    return;
+  }
+
+  // iOS handling: launch custom scheme and fallback to App Store if app not installed
   window.location.href = customSchemeUrl;
 
   if (fallbackDownload && platform === "ios") {
@@ -70,7 +95,7 @@ function triggerAppOpen(customSchemeUrl, fallbackDownload = true) {
       if (!appOpened && !document.hidden && Date.now() - startTime < 3500) {
         window.location.href = downloadUrl;
       }
-    }, 2000);
+    }, 1500);
   }
 }
 

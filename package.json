@@ -1,0 +1,23 @@
+{
+  "name": "9javibemall-web",
+  "version": "2.0.0",
+  "description": "Production-ready, SEO-friendly marketplace web frontend for 9jaVibeMall",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "build": "node scripts/build.js",
+    "test": "node test/seo-test.js"
+  },
+  "keywords": [
+    "9javibemall",
+    "marketplace",
+    "seo",
+    "ecommerce",
+    "nigeria"
+  ],
+  "author": "Stellaris Nova Tech",
+  "license": "ISC",
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
