@@ -34,6 +34,7 @@ const sitemapIndexHandler = require("./api/sitemap");
 const sitemapsChunkHandler = require("./api/sitemaps");
 const robotsHandler = require("./api/robots");
 const configHandler = require("./api/config");
+const assetsHandler = require("./api/assets");
 
 const PORT = process.env.PORT || 3000;
 const rootDir = __dirname;
@@ -154,7 +155,10 @@ const server = http.createServer(async (req, res) => {
     return categoryHandler(req, res);
   }
 
-  // 9. Static assets
+  // 9. Static assets & Asset handler
+  if (pathname.startsWith("/api/assets")) {
+    return assetsHandler(req, res);
+  }
   if (pathname.startsWith("/assets/")) {
     const assetPath = path.join(rootDir, pathname);
     return serveStaticFile(assetPath, res);

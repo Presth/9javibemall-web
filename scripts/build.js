@@ -99,8 +99,40 @@ const sitemapContent = `<?xml version="1.0" encoding="UTF-8"?>
 fs.writeFileSync(path.join(rootDir, "sitemap.xml"), sitemapContent, "utf-8");
 console.log("✓ Generated sitemap.xml");
 
-// 4. Verify Serverless Handlers
-console.log("\n[4/4] Verifying serverless and SEO modules...");
+// 4. Mirror assets and public static files for hosts that default to public/
+console.log("\n[4/5] Preparing public/ static distribution folder...");
+const publicDir = path.join(rootDir, "public");
+const publicAssetsDir = path.join(publicDir, "assets");
+const rootAssetsDir = path.join(rootDir, "assets");
+
+if (!fs.existsSync(publicAssetsDir)) {
+  fs.mkdirSync(publicAssetsDir, { recursive: true });
+}
+
+// Copy all assets
+if (fs.existsSync(rootAssetsDir)) {
+  const assetFiles = fs.readdirSync(rootAssetsDir);
+  for (const file of assetFiles) {
+    fs.copyFileSync(
+      path.join(rootAssetsDir, file),
+      path.join(publicAssetsDir, file)
+    );
+  }
+  console.log(`✓ Synchronized ${assetFiles.length} assets to public/assets/`);
+}
+
+// Copy robots.txt, sitemap.xml, and .well-known to public/
+fs.copyFileSync(path.join(rootDir, "robots.txt"), path.join(publicDir, "robots.txt"));
+fs.copyFileSync(path.join(rootDir, "sitemap.xml"), path.join(publicDir, "sitemap.xml"));
+
+const publicWellKnown = path.join(publicDir, ".well-known");
+if (!fs.existsSync(publicWellKnown)) fs.mkdirSync(publicWellKnown, { recursive: true });
+if (fs.existsSync(assetLinksPath)) fs.copyFileSync(assetLinksPath, path.join(publicWellKnown, "assetlinks.json"));
+if (fs.existsSync(appleAssocPath)) fs.copyFileSync(appleAssocPath, path.join(publicWellKnown, "apple-app-site-association"));
+console.log("✓ Synchronized robots, sitemaps, and .well-known to public/");
+
+// 5. Verify Serverless Handlers
+console.log("\n[5/5] Verifying serverless and SEO modules...");
 const modulesToVerify = [
   "../lib/api.js",
   "../lib/seo.js",
@@ -110,6 +142,8 @@ const modulesToVerify = [
   "../api/sitemap.js",
   "../api/sitemaps.js",
   "../api/robots.js",
+  "../api/assets.js",
+  "../api/config.js",
 ];
 
 for (const mod of modulesToVerify) {
@@ -125,3 +159,4 @@ for (const mod of modulesToVerify) {
 console.log("\n========================================");
 console.log("✅ Build and validation completed successfully!");
 console.log("========================================");
+

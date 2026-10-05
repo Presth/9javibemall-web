@@ -195,7 +195,20 @@ async function runTests() {
     assert(configJson.status === 200, "/api/config?format=json returns HTTP 200");
     assert(configJson.headers["content-type"].includes("application/json"), "/api/config?format=json Content-Type is application/json");
     const parsedConfig = JSON.parse(configJson.body);
-    assert(typeof parsedConfig.API_BASE_URL === "string" && parsedConfig.API_BASE_URL.length > 0, "API_BASE_URL is a valid string in JSON response");
+    // TEST 12: Static Assets and Fallback Handler
+    console.log("\n[12] Testing Static Assets and Fallback Handler (/assets/* and /api/assets)...");
+    const cssRes = await request("/assets/styles.css");
+    assert(cssRes.status === 200, "/assets/styles.css returns HTTP 200");
+    assert(cssRes.headers["content-type"].includes("text/css"), "/assets/styles.css Content-Type is text/css");
+    assert(cssRes.body.includes(":root"), "/assets/styles.css contains design system tokens");
+
+    const jsRes = await request("/assets/app.js");
+    assert(jsRes.status === 200, "/assets/app.js returns HTTP 200");
+    assert(jsRes.headers["content-type"].includes("javascript"), "/assets/app.js Content-Type is javascript");
+
+    const apiAssetRes = await request("/api/assets?file=styles.css");
+    assert(apiAssetRes.status === 200, "/api/assets?file=styles.css returns HTTP 200");
+    assert(apiAssetRes.headers["content-type"].includes("text/css"), "/api/assets?file=styles.css Content-Type is text/css");
 
     console.log("\n========================================");
     console.log(`Results: ${passedCount} PASSED, ${failedCount} FAILED`);

@@ -1,5 +1,25 @@
 {
+  "framework": null,
+  "outputDirectory": ".",
+  "functions": {
+    "api/**/*.js": {
+      "includeFiles": "assets/**"
+    }
+  },
   "headers": [
+    {
+      "source": "/assets/:file*",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=86400, stale-while-revalidate=604800"
+        },
+        {
+          "key": "Access-Control-Allow-Origin",
+          "value": "*"
+        }
+      ]
+    },
     {
       "source": "/.well-known/apple-app-site-association",
       "headers": [
@@ -83,6 +103,10 @@
     {
       "source": "/sitemaps/:file*",
       "destination": "/api/sitemaps?file=:file*"
+    },
+    {
+      "source": "/assets/:file*",
+      "destination": "/api/assets?file=:file*"
     },
     {
       "source": "/product/:id*",
