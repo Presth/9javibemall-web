@@ -9,6 +9,14 @@ const {
   renderNotFoundPage,
 } = require("../lib/seo");
 
+const fs = require("fs");
+const path = require("path");
+
+function isBot(req) {
+  const ua = (req.headers && (req.headers["user-agent"] || req.headers["User-Agent"])) || "";
+  return /googlebot|bingbot|yandex|baiduspider|facebookexternalhit|twitterbot|rogerbot|linkedinbot|embedly|quora link preview|showyoubot|outbrain|pinterest|slackbot|vkShare|W3C_Validator|curl|Wget/i.test(ua);
+}
+
 module.exports = async function handler(req, res) {
   // Extract product identifier from query or URL
   let identifier = req.query.id || req.query.slug;
@@ -21,6 +29,14 @@ module.exports = async function handler(req, res) {
   }
 
   if (!identifier) {
+    if (!isBot(req)) {
+      const templatePath = path.join(__dirname, "..", "product", "index.html");
+      if (fs.existsSync(templatePath)) {
+        res.status(200);
+        res.setHeader("Content-Type", "text/html; charset=utf-8");
+        return res.send(fs.readFileSync(templatePath, "utf8"));
+      }
+    }
     res.status(404);
     res.setHeader("Content-Type", "text/html; charset=utf-8");
     return res.send(
@@ -98,6 +114,7 @@ module.exports = async function handler(req, res) {
 
   <link rel="icon" type="image/png" href="/assets/logo.png" />
   <link rel="stylesheet" href="/assets/styles.css" />
+  <script src="/api/config.js"></script>
 
   <!-- Schema.org Structured Data -->
   <script type="application/ld+json">
@@ -281,6 +298,14 @@ module.exports = async function handler(req, res) {
     return res.send(html);
   } catch (err) {
     console.error("[SSR] Product error:", err);
+    if (!isBot(req)) {
+      const templatePath = path.join(__dirname, "..", "product", "index.html");
+      if (fs.existsSync(templatePath)) {
+        res.status(200);
+        res.setHeader("Content-Type", "text/html; charset=utf-8");
+        return res.send(fs.readFileSync(templatePath, "utf8"));
+      }
+    }
     res.status(500);
     res.setHeader("Content-Type", "text/html; charset=utf-8");
     return res.send(

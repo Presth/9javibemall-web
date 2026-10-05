@@ -24,6 +24,7 @@
 
   <link rel="icon" type="image/png" href="/assets/logo.png" />
   <link rel="stylesheet" href="/assets/styles.css" />
+  <script src="/api/config.js"></script>
   <style>
     .business-header {
       position: relative;
@@ -315,7 +316,9 @@
       document.getElementById("og-url").content = canonicalUrl;
       document.getElementById("twitter-url").content = canonicalUrl;
 
-      const API_BASE_URL = "https://api.9javibemall.com.ng/api/v1";
+      const API_BASE_URL =
+        window.__ENV__?.API_BASE_URL ||
+        "https://api.9javibemall.com.ng/api/v1";
 
       try {
         const response = await fetch(`${API_BASE_URL}/business/${businessId}`);
@@ -326,9 +329,10 @@
         const data = await response.json();
         const business = data.business || data.data || data;
 
-        if (!business || (!business.name && !business.id)) {
+        if (!business || (!business.name && !business.id && !business.business_id)) {
           throw new Error("Invalid business payload");
         }
+        business.id = business.id || business.business_id || business.uuid;
 
         // Render business info
         document.getElementById("biz-name").innerText = business.name || "Untitled Business";

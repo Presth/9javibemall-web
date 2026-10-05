@@ -94,6 +94,7 @@ module.exports = async function handler(req, res) {
 
   <link rel="icon" type="image/png" href="/assets/logo.png" />
   <link rel="stylesheet" href="/assets/styles.css" />
+  <script src="/api/config.js"></script>
 
   <script type="application/ld+json">
     ${collectionJsonLd}
@@ -242,6 +243,7 @@ module.exports = async function handler(req, res) {
       <a href="naijavibemall://">Open in Mobile App</a>
     </p>
   </footer>
+  <script src="/assets/app.js"></script>
 </body>
 </html>`;
 

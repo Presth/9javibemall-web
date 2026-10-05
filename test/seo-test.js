@@ -184,6 +184,19 @@ async function runTests() {
     assert(bizJsonLd.address?.addressLocality === "Wuse 2", "Address locality is populated");
     assert(bizJsonLd.address?.addressCountry === "NG", "Country is NG");
 
+    // TEST 11: Dynamic Environment Configuration API
+    console.log("\n[11] Testing Dynamic API Configuration (/api/config.js & /api/config)...");
+    const configJs = await request("/api/config.js");
+    assert(configJs.status === 200, "/api/config.js returns HTTP 200");
+    assert(configJs.headers["content-type"].includes("application/javascript"), "/api/config.js Content-Type is application/javascript");
+    assert(configJs.body.includes("window.__ENV__.API_BASE_URL"), "/api/config.js injects window.__ENV__.API_BASE_URL");
+
+    const configJson = await request("/api/config?format=json");
+    assert(configJson.status === 200, "/api/config?format=json returns HTTP 200");
+    assert(configJson.headers["content-type"].includes("application/json"), "/api/config?format=json Content-Type is application/json");
+    const parsedConfig = JSON.parse(configJson.body);
+    assert(typeof parsedConfig.API_BASE_URL === "string" && parsedConfig.API_BASE_URL.length > 0, "API_BASE_URL is a valid string in JSON response");
+
     console.log("\n========================================");
     console.log(`Results: ${passedCount} PASSED, ${failedCount} FAILED`);
     console.log("========================================");

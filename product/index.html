@@ -24,6 +24,7 @@
 
   <link rel="icon" type="image/png" href="/assets/logo.png" />
   <link rel="stylesheet" href="/assets/styles.css" />
+  <script src="/api/config.js"></script>
 </head>
 <body>
 
@@ -218,7 +219,9 @@
       document.getElementById("og-url").content = canonicalUrl;
       document.getElementById("twitter-url").content = canonicalUrl;
 
-      const API_BASE_URL = "https://api.9javibemall.com.ng/api/v1";
+      const API_BASE_URL =
+        window.__ENV__?.API_BASE_URL ||
+        "https://api.9javibemall.com.ng/api/v1";
 
       try {
         const isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(productId);
@@ -238,9 +241,10 @@
         const data = await response.json();
         const product = data.product || data.data || data;
 
-        if (!product || (!product.name && !product.id)) {
+        if (!product || (!product.name && !product.id && !product.productId)) {
           throw new Error("Invalid product payload");
         }
+        product.id = product.id || product.productId || product.uuid;
 
         // Render product data
         document.getElementById("product-title").innerText = product.name || "Untitled Product";

@@ -8,12 +8,32 @@ const fs = require("fs");
 const path = require("path");
 const url = require("url");
 
+// Load .env if present
+try {
+  const envPath = path.join(__dirname, ".env");
+  if (fs.existsSync(envPath)) {
+    const envContent = fs.readFileSync(envPath, "utf8");
+    envContent.split(/\r?\n/).forEach((line) => {
+      const match = line.match(/^\s*([\w.-]+)\s*=\s*(.*)?\s*$/);
+      if (match) {
+        const key = match[1];
+        let val = match[2] || "";
+        if ((val.startsWith('"') && val.endsWith('"')) || (val.startsWith("'") && val.endsWith("'"))) {
+          val = val.slice(1, -1);
+        }
+        process.env[key] = process.env[key] || val.trim();
+      }
+    });
+  }
+} catch (e) {}
+
 const productHandler = require("./api/product");
 const businessHandler = require("./api/business");
 const categoryHandler = require("./api/category");
 const sitemapIndexHandler = require("./api/sitemap");
 const sitemapsChunkHandler = require("./api/sitemaps");
 const robotsHandler = require("./api/robots");
+const configHandler = require("./api/config");
 
 const PORT = process.env.PORT || 3000;
 const rootDir = __dirname;
@@ -102,14 +122,25 @@ const server = http.createServer(async (req, res) => {
     return sitemapsChunkHandler(req, res);
   }
 
-  // 6. Product SSR
+  // 6. Config Endpoint (Expose env var API_BASE_URL to browser)
+  if (pathname === "/api/config.js" || pathname === "/api/config") {
+    return configHandler(req, res);
+  }
+
+  // 7. Product SSR & Static Fallback
+  if (pathname === "/product") {
+    return serveStaticFile(path.join(rootDir, "product", "index.html"), res);
+  }
   const productMatch = pathname.match(/^\/product\/(.+)$/);
   if (productMatch) {
     req.query.id = productMatch[1];
     return productHandler(req, res);
   }
 
-  // 7. Business SSR
+  // 8. Business SSR & Static Fallback
+  if (pathname === "/business") {
+    return serveStaticFile(path.join(rootDir, "business", "index.html"), res);
+  }
   const businessMatch = pathname.match(/^\/business\/(.+)$/);
   if (businessMatch) {
     req.query.id = businessMatch[1];

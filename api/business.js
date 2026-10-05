@@ -1,3 +1,5 @@
+const fs = require("fs");
+const path = require("path");
 const { fetchBusiness, fetchBusinessProducts } = require("../lib/api");
 const {
   escapeHtml,
@@ -8,6 +10,11 @@ const {
   generateBreadcrumbJsonLd,
   renderNotFoundPage,
 } = require("../lib/seo");
+
+function isBot(req) {
+  const ua = (req.headers && (req.headers["user-agent"] || req.headers["User-Agent"])) || "";
+  return /googlebot|bingbot|yandex|baiduspider|facebookexternalhit|twitterbot|rogerbot|linkedinbot|embedly|quora link preview|showyoubot|outbrain|pinterest|slackbot|vkShare|W3C_Validator|curl|Wget/i.test(ua);
+}
 
 module.exports = async function handler(req, res) {
   let identifier = req.query.id;
@@ -20,14 +27,22 @@ module.exports = async function handler(req, res) {
   }
 
   if (!identifier) {
-    res.status(404);
-    res.setHeader("Content-Type", "text/html; charset=utf-8");
-    return res.send(
-      renderNotFoundPage({
-        title: "No Store Specified",
-        message: "Please specify a business ID to view store catalog.",
-      })
-    );
+    if (isBot(req)) {
+      res.status(404);
+      res.setHeader("Content-Type", "text/html; charset=utf-8");
+      return res.send(
+        renderNotFoundPage({
+          title: "No Store Specified",
+          message: "Please specify a business ID to view store catalog.",
+        })
+      );
+    }
+    const templatePath = path.join(__dirname, "..", "business", "index.html");
+    if (fs.existsSync(templatePath)) {
+      res.status(200);
+      res.setHeader("Content-Type", "text/html; charset=utf-8");
+      return res.send(fs.readFileSync(templatePath, "utf8"));
+    }
   }
 
   try {
@@ -96,6 +111,7 @@ module.exports = async function handler(req, res) {
 
   <link rel="icon" type="image/png" href="/assets/logo.png" />
   <link rel="stylesheet" href="/assets/styles.css" />
+  <script src="/api/config.js"></script>
 
   <!-- Schema.org Structured Data -->
   <script type="application/ld+json">
@@ -391,6 +407,14 @@ module.exports = async function handler(req, res) {
     return res.send(html);
   } catch (err) {
     console.error("[SSR] Business error:", err);
+    if (!isBot(req)) {
+      const templatePath = path.join(__dirname, "..", "business", "index.html");
+      if (fs.existsSync(templatePath)) {
+        res.status(200);
+        res.setHeader("Content-Type", "text/html; charset=utf-8");
+        return res.send(fs.readFileSync(templatePath, "utf8"));
+      }
+    }
     res.status(500);
     res.setHeader("Content-Type", "text/html; charset=utf-8");
     return res.send(
